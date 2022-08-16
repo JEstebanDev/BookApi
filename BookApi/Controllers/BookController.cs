@@ -22,6 +22,7 @@ namespace BookApi.Controllers
         public async Task<IActionResult> GetAllBooks()
         {
             var bookList = await bookRepository.GetAllAsync();
+
             /*
             var bookListDTO = new List<BookDTO>();
             bookList.ToList().ForEach(item =>
