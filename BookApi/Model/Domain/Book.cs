@@ -10,7 +10,8 @@ namespace BookApi.Model.Domain
         public string? Autor { get; set; }
         public int? Year { get; set; }
         public int? Pages { get; set; }
+        public int? CategoryId { get; set; }
+        public Category Category { get; set; }
 
-        public virtual Category Category { get; set; }
     }
 }

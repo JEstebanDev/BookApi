@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BookApi.Model.Domain;
 using BookApi.Model.DTO;
 using BookApi.Repository;
 using Microsoft.AspNetCore.Mvc;
@@ -40,7 +41,46 @@ namespace BookApi.Controllers
             */
 
             var bookListDTO = mapper.Map<List<BookDTO>>(bookList);
-            return Ok(bookListDTO);
+            return Ok(bookList);
+        }
+
+        [HttpGet]
+        [Route("{id:int}")]
+        [ActionName("GetByIdBook")]
+        public async Task<IActionResult> GetByIdBook(int id)
+        {
+            var result = await bookRepository.GetByIdAsync(id);
+            if (result == null)
+            {
+                return NotFound();
+            }
+            return Ok(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddBook(BookDTO book)
+        {
+            var result = bookRepository.SaveBook(book);
+            return CreatedAtAction(nameof(GetByIdBook), new { id = book.Id }, book);
+        }
+
+        [HttpPut]
+        [Route("{id:int}")]
+        public async Task<IActionResult> updateBook([FromRoute] int id, [FromBody] BookDTO book)
+        {
+            var result = bookRepository.UpdateBook(id, book);
+            if (result == null)
+            {
+                return NotFound();
+            }
+            return Ok(result);
+        }
+
+        [HttpDelete]
+        [Route("{id:int}")]
+        public async Task<IActionResult> deleteBook(int id)
+        {
+            return Ok(bookRepository.DeleteById(id));
         }
     }
 }
